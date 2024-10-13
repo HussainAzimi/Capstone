@@ -1,0 +1,143 @@
+/* - Primary Colors: Soft blues and greens for a calming, welcoming feel.
+- Secondary Colors: Warm tones like oranges and yellows to add energy and highlight important features. */
+:root {
+  /* primary Colors */
+  --primary-blue: #A0DDE6; /* Soft blue */
+  --primary-green: #B8E0D2; /* Soft green */
+  /* Secondary Colors */
+  --secondary-orange: #FFA500; /* Warm orange */
+  --secondary-yellow: #FFD700; /* Warm yellow */
+
+/* Body styling */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color:var(--primary-green);
+  color: white;
+  border-bottom: 3px solid var(--primary-green);
+}
+
+.logo{
+  display: flex;
+  justify-content: center;
+
+}
+
+.logo-text{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 800;
+  margin-left: 5px;
+  color: var(--secondary-orange)
+}
+.logo img {
+  max-width: 60px;
+  border-radius: 15px;
+  height: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
+}
+
+.nav a:hover {
+  background-color: var(--secondary-orange);
+  color:#ffffff;
+  cursor: pointer;
+
+}
+
+.nav a.active {
+  background-color: var(--secondary-yellow);
+  color:#ffffff;
+}
+
+/* Main section styling */
+.main {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.left {
+  flex: 2;
+  width: 50%;;
+  padding-right: 20px;
+}
+
+.right {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.right h2{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+
+.right p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 100;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Footer styling */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--primary-green);
+  color: white;
+  border-top: 3px solid var(--primary-blue);
+  position: relative;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links a {
+  color: white;
+  margin: 0 10px;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: var(--secondary-orange);
+}
+
+.footer p:hover {
+  color: var(--secondary-orange);
+  cursor: pointer;
+}
+
