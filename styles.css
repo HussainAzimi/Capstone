@@ -1,5 +1,5 @@
 /* - Primary Colors: Soft blues and greens for a calming, welcoming feel.
-- Secondary Colors: Warm tones like oranges and yellows to add energy and highlight important features. */
+   - Secondary Colors: Warm tones like oranges and yellows to add energy and highlight important features. */
 :root {
   /* primary Colors */
   --primary-blue: #A0DDE6; /* Soft blue */
@@ -45,49 +45,97 @@ body {
   height: auto;
 }
 
-.nav {
+nav {
   display: flex;
   gap: 20px;
 }
 
-.nav a {
+.nav-links{
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex: row;
+  justify-content: space-around;
+
+
+}
+.nav-links > li{
+  display: block;
+  margin-left: 30px;
+}
+
+}
+li a {
   text-decoration: none;
   color: white;
   padding: 10px 20px;
   border-radius: 15px;
 }
 
-.nav a:hover {
+li a:hover {
   background-color: var(--secondary-orange);
   color:#ffffff;
   cursor: pointer;
 
 }
 
-.nav a.active {
+li a.active {
   background-color: var(--secondary-yellow);
   color:#ffffff;
 }
 
 /* Main section styling */
-.main {
+#main {
   display: flex;
+  flex-wrap: wrap;
   padding: 20px;
   justify-content: space-between;
+  height: auto;
 }
 
 .left {
-  flex: 2;
-  width: 50%;;
-  padding-right: 20px;
-}
+  width: 40%;
+  padding: 10px;
 
+
+}
 .right {
-  flex: 1;
-  background-color: #ffffff;
+  width: 55%;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.form-container{
+  margin-top: 10px;
+  padding: 15px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Times New Roman', Times, serif;
+  display: none;
+}
+input[type=text], textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--primary-green);
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit], input[type=reset] {
+  background-color: var(--secondary-orange);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type=submit], input[type=reset]:hover {
+  background-color: var(--secondary-yellow);
 }
 
 .right h2{
@@ -105,6 +153,19 @@ body {
   width: 100%;
   height: auto;
   border-radius: 10px;
+}
+
+.show-feedback{
+text-decoration: underline;
+font-weight:bold;
+cursor: pointer;
+font-size: small;
+}
+
+.form-container>.title{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* Footer styling */
@@ -139,5 +200,83 @@ body {
 .footer p:hover {
   color: var(--secondary-orange);
   cursor: pointer;
+}
+
+/* css for community page */
+
+.form-visible{
+  display: block;
+}
+
+/* Start Medai Query */
+
+ /* for small screen */
+@media (max-width: 549px) {
+  .hidden--mobile {
+    display: none !important;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  nav>i {
+    padding: 1rem;
+    font-size: 2em;
+  }
+
+  nav>ul {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 0;
+  }
+
+  nav>ul>li {
+    padding: 0.2rem;
+    margin: 0.5rem;
+    list-style-type: none;
+  }
+  ul>li>a{
+    padding:0.5rem;
+  }
+  .header{
+    flex-direction: column;
+  }
+  .logo{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo>img{
+     min-width: 100px;
+  }
+  .logo>.logo-text{
+    display: none !important;
+  }
+  #main{
+    flex-direction: column;
+    align-items: center;
+  }
+  #main * {
+    justify-content: center;
+    justify-items: center;
+
+  }
+  #main left{
+    margin-bottom: 50px;
+  }
+
+}
+
+/* for big screen */
+@media (min-width: 550px){
+  nav>.fa-bars {
+    display: none;
+  }
+
 }
 
