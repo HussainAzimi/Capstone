@@ -12,6 +12,5 @@ export default state => html `
         </div>
         ${nav(store.nav)}
 
-
 </header>
 `;
