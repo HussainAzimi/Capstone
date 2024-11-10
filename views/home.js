@@ -1,5 +1,4 @@
 import html from "html-literal";
-import imgLogo from "../assets/Logo.png";
 import imgWelcome from "../assets/Welcome.png";
 export default (state) => html`
 
