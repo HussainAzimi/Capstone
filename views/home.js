@@ -1,7 +1,7 @@
 import html from "html-literal";
 import imgLogo from "../assets/Logo.png";
 import imgWelcome from "../assets/Welcome.png";
-export default () => html`
+export default (state) => html`
 
 <section id="main">
         <div class="left">
@@ -14,11 +14,16 @@ export default () => html`
                   like bus stations, Hospitals, Schools, and others, we are working here to make
                   this site more friendly and
                   efficient and we are looking forward for your nice and helpful feedbacks.</p>
-             <spane class="show-feedback">I have a feedback</spane>
+                  <h3>
+                    The weather in ${state.weather.city} is ${state.weather.description}.
+                    Temperature is ${state.weather.temp}F, and it feels like
+                    ${state.weather.feelsLike}F.
+                  </h3>
+             <span class="show-feedback">I have a feedback</span>
         </div>
         <div class="form-container">
             <h2 class="title">Please submit your feedback through below form</h2>
-            <form id="frm-feedback" method="GET" action="/index.html">
+            <form id="frm-feedback" method="POST" action="">
                 <label for="fname">First Name</label>
                 <input type="text" id="fname" name="firstname" placeholder="Your name..">
 
