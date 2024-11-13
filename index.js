@@ -65,14 +65,19 @@ router.hooks({
     render(store[view]);
   },
   after: (match) => {
+    const view = match?.data?.view ? camelCase(match.data.view) : "home";
     router.updatePageLinks();
 
     // add menu toggle to bars icon in nav bar
     document.querySelector(".fa-bars").addEventListener("click", () => {
         document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
+   if(view === "home"){
 
-
+    document.querySelector(".show-feedback").addEventListener("click", () =>{
+      document.querySelector(".form-container").style.display = "block";
+      });
+   }
   }
 });
 
@@ -92,14 +97,7 @@ router
       })
       .resolve();
 
-document.querySelector(".fa-bars").addEventListener("click", () => {
-  document.querySelector("nav > ul").classList.toggle("hidden--mobile");
 
-});
-
-document.querySelector(".show-feedback").addEventListener("click", () =>{
-  document.querySelector(".form-container").style.display = "block";
-  });
 
 
 
