@@ -1,4 +1,5 @@
 export default {
   header: "location page",
-  view: "location"
+  view: "location",
+  busInfo:[]
 };

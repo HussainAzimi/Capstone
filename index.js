@@ -14,20 +14,25 @@ function render(state = store.home) {
       ${main(state)}
       ${footer()}
     `;
-    router.updatePageLinks();
 }
 
-render();
+
 
 router.hooks({
   // We pass in the `done` function to the before hook handler to allow the function to tell Navigo we are finished with the before hook.
   // The `match` parameter is the data that is passed from Navigo to the before hook handler with details about the route being accessed.
   // https://github.com/krasimir/navigo/blob/master/DOCUMENTATION.md#match
-  before: (done, match) => {
+  before: async (done, match) => {
+
     // We need to know what view we are on to know what data to fetch
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
     // Add a switch case statement to handle multiple routes
     switch (view) {
+
+      case "location":
+
+        done();
+        break;
       // Add a case for each view that needs data from an API
       case "home":
         // New Axios get request utilizing already made environment variable
@@ -60,14 +65,19 @@ router.hooks({
     render(store[view]);
   },
   after: (match) => {
+    const view = match?.data?.view ? camelCase(match.data.view) : "home";
     router.updatePageLinks();
 
     // add menu toggle to bars icon in nav bar
     document.querySelector(".fa-bars").addEventListener("click", () => {
         document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
+   if(view === "home"){
 
-
+    document.querySelector(".show-feedback").addEventListener("click", () =>{
+      document.querySelector(".form-container").style.display = "block";
+      });
+   }
   }
 });
 
@@ -87,14 +97,7 @@ router
       })
       .resolve();
 
-document.querySelector(".fa-bars").addEventListener("click", () => {
-  document.querySelector("nav > ul").classList.toggle("hidden--mobile");
 
-});
-
-document.querySelector(".show-feedback").addEventListener("click", () =>{
-  document.querySelector(".form-container").style.display = "block";
-  });
 
 
 
