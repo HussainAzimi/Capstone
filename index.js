@@ -2,7 +2,7 @@
 import { header, main, nav, footer } from "./components";
 import * as store from "./store";
 import Navigo from "navigo";
-import { camelCase } from "lodash";
+import { camelCase, fromPairs } from "lodash";
 import axios from "axios"
 
 
@@ -75,7 +75,13 @@ router.hooks({
    if(view === "home"){
 
     document.querySelector(".show-feedback").addEventListener("click", () =>{
-      document.querySelector(".form-container").style.display = "block";
+          const frmStatus = document.querySelector("#display-hide");
+       if(frmStatus.style.display === "none"){
+        frmStatus.style.display = "flex";
+       }else{
+        frmStatus.style.display = "none";
+       }
+
       });
    }
   }
