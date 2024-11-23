@@ -9,6 +9,12 @@ export default () => html`
             <p>Does anyone can help me to find public shcool?</p>
         </div>
         <button type="submit">Ask a Question</button>
+        <div class="forum-post">
+            <h3>Question Title : direction</h3>
+            <p>Askedd by: Userx</p>
+            <p>Does anyone can help me to find public shcool?</p>
+        </div>
+        <button type="submit">Save</button>
     </div>
 
     <div class="stories">

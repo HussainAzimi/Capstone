@@ -3,7 +3,9 @@ import { header, main, nav, footer } from "./components";
 import * as store from "./store";
 import Navigo from "navigo";
 import { camelCase, fromPairs } from "lodash";
-import axios from "axios"
+import axios from "axios";
+
+
 
 
 const router = new Navigo("/");
@@ -15,8 +17,6 @@ function render(state = store.home) {
       ${footer()}
     `;
 }
-
-
 
 router.hooks({
   // We pass in the `done` function to the before hook handler to allow the function to tell Navigo we are finished with the before hook.
@@ -31,7 +31,39 @@ router.hooks({
 
       case "location":
 
+      axios
+      .get(`https://api.geoapify.com/v2/places?categories=education&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
+      .then(response => {
+        // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
+              response.data.features.map((feature) => {
+
+              const propertyName = feature.properties.name;
+              const postcode = feature.properties.postcode;
+              const propertyDistrict = feature.properties.district;
+              const propertyStreet = feature.properties.street;
+              const propertyHouseNumber = feature.properties.housenumber;
+
+
+
+              store.location.places.push({
+                name: propertyName,
+                postcode: postcode,
+                district: propertyDistrict,
+                street: propertyStreet,
+                housenumber: propertyHouseNumber,
+
+
+              });
+
+         });
+
         done();
+      })
+      .catch((error) => {
+        console.log(error);
+        done();
+      });
+
         break;
       // Add a case for each view that needs data from an API
       case "home":
@@ -73,14 +105,13 @@ router.hooks({
         document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
    if(view === "home"){
-
     document.querySelector(".show-feedback").addEventListener("click", () =>{
           const frmStatus = document.querySelector("#display-hide");
-       if(frmStatus.style.display === "none"){
-        frmStatus.style.display = "flex";
-       }else{
-        frmStatus.style.display = "none";
-       }
+          if(frmStatus.style.display === "none"){
+            frmStatus.style.display = "flex";
+          }else{
+            frmStatus.style.display = "none";
+          }
 
       });
    }
@@ -102,6 +133,8 @@ router
         },
       })
       .resolve();
+
+
 
 
 

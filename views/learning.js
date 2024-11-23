@@ -10,7 +10,7 @@ export default () => html`
                 <option value="general">General</option>
                 <option value="language">Language</option>
                 <option value="career">Career</option>
-                <option value="calture">Calture</option>
+                <option value="culture">Culture</option>
             </select>
             <button type="submit">Search</button>
         </form>
@@ -42,7 +42,7 @@ export default () => html`
                         <option value="general">General</option>
                         <option value="language">Language</option>
                         <option value="career">Career</option>
-                        <option value="calture">Calture</option>
+                        <option value="culture">Culture</option>
                     </select>
                 </div>
 
