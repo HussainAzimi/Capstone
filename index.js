@@ -15,16 +15,20 @@ function render(state = store.home) {
     `;
 }
 
-function foo(done) {
+async function foo(done) {
   console.log("store is this now", store.location.category)
+  let zipcode = store.location.zipcode   || '63110'
   let category = store.location.category || 'healthcare'
   console.log("it worked", category)
-  axios
-.get(`https://api.geoapify.com/v2/places?categories=${category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
-.then(response => {
-  console.log("data",response.data)
-  // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
-        response.data.features.map((feature) => {
+  let response = await axios
+  .get(`https://api.geoapify.com/v1/geocode/search?text=${zipcode}&lang=en&limit=1&type=postcode&filter=countrycode:us&&format=json&apiKey=${process.env.GEO_API_FY_API_KEY}`)
+  console.log(response);
+  await axios
+    .get(`https://api.geoapify.com/v2/places?categories=${category}&filter=place:${response.data.results[0].place_id}&apiKey=${process.env.GEO_API_FY_API_KEY}`)
+    .then(response => {
+      console.log("data", response.data)
+      // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
+      response.data.features.map((feature) => {
 
         const propertyName = feature.properties.name;
         const postcode = feature.properties.postcode;
@@ -44,15 +48,15 @@ function foo(done) {
 
         });
 
-   });
+      });
 
-  done();
-})
-.catch((error) => {
-  console.log(error);
-  done();
-});
- done();
+      done();
+    })
+    .catch((error) => {
+      console.log(error);
+      done();
+    });
+
 }
 
 router.hooks({
@@ -68,42 +72,42 @@ router.hooks({
     switch (view) {
 
       case "location":
-      console.log("category change", store.location.category);
-      foo(done)
-      //     axios
-      // .get(`https://api.geoapify.com/v2/places?categories=${store.location.category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
-      // .then(response => {
-      //   // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
-      //         response.data.features.map((feature) => {
+        console.log("category change", store.location.category);
+        foo(done)
+        //     axios
+        // .get(`https://api.geoapify.com/v2/places?categories=${store.location.category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
+        // .then(response => {
+        //   // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
+        //         response.data.features.map((feature) => {
 
-      //         const propertyName = feature.properties.name;
-      //         const postcode = feature.properties.postcode;
-      //         const propertyDistrict = feature.properties.district;
-      //         const propertyStreet = feature.properties.street;
-      //         const propertyHouseNumber = feature.properties.housenumber;
-
-
-
-      //         store.location.places.push({
-      //           name: propertyName,
-      //           postcode: postcode,
-      //           district: propertyDistrict,
-      //           street: propertyStreet,
-      //           housenumber: propertyHouseNumber,
+        //         const propertyName = feature.properties.name;
+        //         const postcode = feature.properties.postcode;
+        //         const propertyDistrict = feature.properties.district;
+        //         const propertyStreet = feature.properties.street;
+        //         const propertyHouseNumber = feature.properties.housenumber;
 
 
-      //         });
 
-      //    });
+        //         store.location.places.push({
+        //           name: propertyName,
+        //           postcode: postcode,
+        //           district: propertyDistrict,
+        //           street: propertyStreet,
+        //           housenumber: propertyHouseNumber,
 
-      //   done();
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      //   done();
-      // });
-      //  done();
-      break;
+
+        //         });
+
+        //    });
+
+        //   done();
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        //   done();
+        // });
+        //  done();
+        break;
       // Add a case for each view that needs data from an API
       case "home":
         // New Axios get request utilizing already made environment variable
@@ -123,11 +127,11 @@ router.hooks({
             console.log(error);
             done();
           });
-          break;
-      default :
+        break;
+      default:
         // We must call done for all views so we include default for the views that don't have cases above.
         done();
-        // break is not needed since it is the last condition, if you move default higher in the stack then you should add the break statement.
+      // break is not needed since it is the last condition, if you move default higher in the stack then you should add the break statement.
     }
   },
   already: (match) => {
@@ -141,107 +145,107 @@ router.hooks({
 
 
     // hide and show feedback form in home page
-   if(view === "home"){
-    document.querySelector(".show-feedback").addEventListener("click", () =>{
-          const frmStatus = document.querySelector("#display-hide");
-          if(frmStatus.style.display === "none"){
-            frmStatus.style.display = "flex";
-          }else{
-            frmStatus.style.display = "none";
-          }
+    if (view === "home") {
+      document.querySelector(".show-feedback").addEventListener("click", () => {
+        const frmStatus = document.querySelector("#display-hide");
+        if (frmStatus.style.display === "none") {
+          frmStatus.style.display = "flex";
+        } else {
+          frmStatus.style.display = "none";
+        }
 
       });
-   }
+    }
 
-   if(view === "community"){
+    if (view === "community") {
 
-        const userPosts = document.getElementById("user-posts");
-        const userPostsDdisplay = document.getElementById("user-posts-display");
+      const userPosts = document.getElementById("user-posts");
+      const userPostsDdisplay = document.getElementById("user-posts-display");
 
-        userPosts.addEventListener("submit", event =>{
-           event.preventDefault();
+      userPosts.addEventListener("submit", event => {
+        event.preventDefault();
 
-           //Get the form element
-           const inputList = event.target.elements;
-           console.log("Input Element List", inputList);
+        //Get the form element
+        const inputList = event.target.elements;
+        console.log("Input Element List", inputList);
 
-           // Create a request body object to send to the API
-            const requestData ={
-              firstName:inputList.name.value,
-              postTitle: inputList.subject.value,
-              postBody: inputList.body.value,
-            };
+        // Create a request body object to send to the API
+        const requestData = {
+          firstName: inputList.name.value,
+          postTitle: inputList.subject.value,
+          postBody: inputList.body.value,
+        };
 
-          // Log the request body to the console
-          console.log("request Body", requestData);
+        // Log the request body to the console
+        console.log("request Body", requestData);
 
-          axios
+        axios
           // Make a POST request to the API to create a new Post
           .post(`${process.env.USER_POSTS_API_URL}/newPost`, requestData)
-          .then(process =>{
-          //Then push the new post onto the post state posts attribute, so it can be displayed in the post container
-          store.community.usesrPosts.push(response.data);
+          .then(process => {
+            //Then push the new post onto the post state posts attribute, so it can be displayed in the post container
+            store.community.usesrPosts.push(response.data);
           })
-           // If there is an error log it to the console
-          .catch(error =>{
+          // If there is an error log it to the console
+          .catch(error => {
             console.log("it puked", error)
           });
-          //  const firstName = document.getElementById("first-name").value;
-          //  const subject = document.getElementById("subject").value;
-          //  const body = document.getElementById("body").value;
+        //  const firstName = document.getElementById("first-name").value;
+        //  const subject = document.getElementById("subject").value;
+        //  const body = document.getElementById("body").value;
 
-          //  const newPost = document.createElement("div");
-          //  newPost.classList.add('new-post');
+        //  const newPost = document.createElement("div");
+        //  newPost.classList.add('new-post');
 
-          //  const authorName = document.createElement("first-name");
-          //  authorName.classList.add("author-name");
-          //  authorName.textContent= firstName;
+        //  const authorName = document.createElement("first-name");
+        //  authorName.classList.add("author-name");
+        //  authorName.textContent= firstName;
 
-          //  const postTitle = document.createElement("h3");
-          //  postTitle.classList.add("post-title");
-          //  postTitle.textContent =subject;
+        //  const postTitle = document.createElement("h3");
+        //  postTitle.classList.add("post-title");
+        //  postTitle.textContent =subject;
 
-          //  const postBody = document.createElement("p");
-          //  postBody.classList.add("postBody");
-          //  postBody.textContent = body;
+        //  const postBody = document.createElement("p");
+        //  postBody.classList.add("postBody");
+        //  postBody.textContent = body;
 
-          //  const buttonReplay = document.createElement("button");
-          //  buttonReplay.classList.add("button-replay");
-          //  buttonReplay.textContent = "Replay";
+        //  const buttonReplay = document.createElement("button");
+        //  buttonReplay.classList.add("button-replay");
+        //  buttonReplay.textContent = "Replay";
 
-          //  const postReply = document.createElement("div");
-          //  postReply.classList.add("post-replay");
+        //  const postReply = document.createElement("div");
+        //  postReply.classList.add("post-replay");
 
-          //  buttonReplay.addEventListener("click", () => {
-          //     const replaytext = prompt("Enter you replay: ");
+        //  buttonReplay.addEventListener("click", () => {
+        //     const replaytext = prompt("Enter you replay: ");
 
-          //     if (replaytext){
-          //       const replyContainer = document.createElement("div");
-          //       replyContainer.textContent = replaytext;
-          //       postReply.appendChild(replyContainer);
-          //     }
-          //  });
+        //     if (replaytext){
+        //       const replyContainer = document.createElement("div");
+        //       replyContainer.textContent = replaytext;
+        //       postReply.appendChild(replyContainer);
+        //     }
+        //  });
 
-          //  newPost.appendChild(authorName);
-          //  newPost.appendChild(postTitle);
-          //  newPost.appendChild(postBody);
-          //  newPost.appendChild(buttonReplay);
-          //  newPost.appendChild(postReply);
+        //  newPost.appendChild(authorName);
+        //  newPost.appendChild(postTitle);
+        //  newPost.appendChild(postBody);
+        //  newPost.appendChild(buttonReplay);
+        //  newPost.appendChild(postReply);
 
-          //  userPostsDdisplay.appendChild(newPost);
+        //  userPostsDdisplay.appendChild(newPost);
 
-          //  userPosts.reset();
-
-
-          // store the dorpDown user selection in location page
+        //  userPosts.reset();
 
 
-        });
+        // store the dorpDown user selection in location page
+
+
+      });
 
 
     }
 
-     if(view ==="location"){
+    if (view === "location") {
 
       let categoryDropdown = document.getElementById("location-catg")
       categoryDropdown.addEventListener("change", (e) => {
@@ -249,17 +253,23 @@ router.hooks({
         console.log("state is this", store.location.category)
       })
 
-       document.getElementById("btn-search-loc").addEventListener("click", ()=>{
+      let location = document.getElementById("zipcode")
+      location.addEventListener("input", (e) => {
+        store.location.zipcode = e.target.value;
+        console.log("state is this", store.location.zipcode)
+      })
+
+      document.getElementById("btn-search-loc").addEventListener("click", () => {
         // const categoryType = document.getElementById("location-catg").value
         // store.location.category = categoryType;
         // console.log("event", e.target.value);
         // store.location.category = e.target.value;
         console.log("store", store.location.category);
-         foo()
-       });
+        foo()
+      });
 
 
-     }
+    }
 
 
 
@@ -267,8 +277,8 @@ router.hooks({
 
     // add menu toggle to bars icon in nav bar
     document.querySelector(".fa-bars").addEventListener("click", () => {
-    document.querySelector("nav > ul").classList.toggle("hidden--mobile");
-  });
+      document.querySelector("nav > ul").classList.toggle("hidden--mobile");
+    });
 
 
   }
@@ -276,19 +286,19 @@ router.hooks({
 
 
 router
-      .on({
-        "/": () => render(store.home),
-        ":view": (match) => {
-          const view = match?.data?.view ? camelCase(match.data.view) : "home";
-          if (view in store) {
-            render(store[view]);
-          } else {
-            render(store.viewNotFound);
-            console.log(`View ${view} not defined`);
-          }
-        },
-      })
-      .resolve();
+  .on({
+    "/": () => render(store.home),
+    ":view": (match) => {
+      const view = match?.data?.view ? camelCase(match.data.view) : "home";
+      if (view in store) {
+        render(store[view]);
+      } else {
+        render(store.viewNotFound);
+        console.log(`View ${view} not defined`);
+      }
+    },
+  })
+  .resolve();
 
 
 

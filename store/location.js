@@ -3,6 +3,7 @@ export default {
   header: "location page",
   view: "location",
   category:"",
+  zipcode:"",
   places: [],
   stops: metroBusStops || []
 };
