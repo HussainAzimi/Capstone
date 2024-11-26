@@ -135,7 +135,6 @@ li a.active {
   align-items: center;
   margin-top: 20px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 }
 
@@ -227,12 +226,6 @@ font-weight:bold;
 cursor: pointer;
 font-size: small;
 }
-
-/* .form-container>.title{
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 20px;
-  font-weight: 500;
-} */
 
 /* Footer styling */
 .footer {
@@ -350,33 +343,18 @@ select {
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-.community h2 {
-  margin-bottom: 10px;
-  text-align: center;
-  font-weight: lighter;
-  margin-bottom: 20px;
 
+.forum-container{
+display: flex;
+flex-direction: column;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+width: 80%;
+padding: 20px;
 }
 
-.forum,
-.stories{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding-bottom: 20px;
-}
-.forum-post,
-.story{
-  background-color: ghostwhite;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  width: 50%;
+.posts form{
+
+
 }
 /* end community page style */
 
@@ -399,8 +377,6 @@ select {
   padding: 10px;
   border-radius: 10px;
   margin-top: 10px;
-
-
 
 }
 .result-items{
