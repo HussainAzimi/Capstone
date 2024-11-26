@@ -1,4 +1,5 @@
 export default {
   header: "community page",
-  view: "community"
+  view: "community",
+  usesrPosts:[]
 };

@@ -6,7 +6,7 @@ export default state => html`
         <form>
 
             <label for="zip-code">Enter your zip code:</label>
-             <input type="text" placeholder="ZIP code">
+             <input type="text" placeholder="ZIP code" value="zip-code" id="zipcode">
 
 
             <label for="location-catg">Select location Category:</label>
@@ -18,7 +18,7 @@ export default state => html`
                 <option value="leisure">Park</option>
 
             </select>
-            <button type="submit" id="search-location">Search</button>
+            <button type="submit" id="btn-search-loc">Search</button>
 
         </form>
       </div>

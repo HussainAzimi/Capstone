@@ -1,53 +1,43 @@
 import html from "html-literal";
-export default () => html`
-    <section class="community" id="community">
-    <div class="forum">
-        <h2>Forum</h2>
-        <div class="forum-post">
-            <h3>Question Title : direction</h3>
-            <p>Askedd by: Userx</p>
-            <p>Does anyone can help me to find public shcool?</p>
-        </div>
-        <button type="submit">Ask a Question</button>
-        <div class="forum-post">
-            <h3>Question Title : direction</h3>
-            <p>Askedd by: Userx</p>
-            <p>Does anyone can help me to find public shcool?</p>
-        </div>
-        <button type="submit">Save</button>
-    </div>
+export default (state) => html`
+<section class="community" id="community">
+     <h2>Disscussion Forum</h2>
+     <div class="forum-container">
+        <div class="display-post">
+          <h2>Shared posts</h2>
+           ${state.usesrPosts.map(post =>{
+             return `
 
-    <div class="stories">
-        <h2>Success Stories</h2>
-        <div class="story">
-            <h3>Language improvment</h3>
-            <p>Posted by: User3</p>
-            <p>Sharing my experience in how to improve my language skill...</p>
+             <p>${post.firstName}</p>
+             <p>${post.postTitle}</p>
+             <p>${post.postBody}</p>
+             <p>${post.Date}</p>
+
+             `
+           }).join("")}
+
+          <div id="user-posts-display"></div>
         </div>
-    </div>
-    <div class="form-container">
         <div class="form-box">
-            <h2>Share Your Story</h2>
-            <form>
-                <div class="form-row">
-                    <div class="form-item">
-                        <label for="first-name">First Name</label>
-                        <input type="text" id="first-name" name="first-name" placeholder="First Name">
-                    </div>
-                    <div class="form-item">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(000) 000-0000">
-                    </div>
-                </div>
+              <p>Ask your question or share your success stories</p>
+                <form id="user-posts">
+                  <label for="name">First Name</label>
+                  <input type="text" id="first-name" name="name" placeholder="First Name" required>
+                  <label for="subject">Select a topic</label>
+                    <select id="subject" name="subject" required>
+                        <option value="general">General</option>
+                        <option value="language Improvment">Language Improvment</option>
+                        <option value="language">Career</option>
+                        <option value="career">Navigation</option>
+                        <option value="culture">Culture</option>
+                    </select>
 
-                <div class="form-row">
-                    <label for="msg">Type your success and helpfull story</label>
-                    <textarea id="msg" name="msg" placeholder="Write your sotry here..."></textarea>
-                </div>
-
-                <button type="submit">Submit</button>
-                <button type="reset">Reset</button>
-           </form>
+                    <label for="body">Type your success and helpfull story</label>
+                    <textarea id="body" name="body" required></textarea>
+                    <button type="submit">Submit</button>
+                    <button type="reset">Reset</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
