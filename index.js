@@ -15,8 +15,9 @@ function render(state = store.home) {
     `;
 }
 
-async function foo(done) {
-  console.log("store is this now", store.location.category)
+async function foo(done = () => {}) {
+  console.log("store is this now", store.location.category);
+  console.log("sotore is this now", store.location.zipcode);
   let zipcode = store.location.zipcode   || '63110'
   let category = store.location.category || 'healthcare'
   console.log("it worked", category)
@@ -49,7 +50,7 @@ async function foo(done) {
         });
 
       });
-
+      console.log(store.location.places);
       done();
     })
     .catch((error) => {
@@ -136,7 +137,9 @@ router.hooks({
   },
   already: (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
-
+    if(view === "location"){
+      foo();
+    }
     render(store[view]);
   },
   after: (match) => {
@@ -259,13 +262,15 @@ router.hooks({
         console.log("state is this", store.location.zipcode)
       })
 
-      document.getElementById("btn-search-loc").addEventListener("click", () => {
+      document.getElementById("btn-search-loc").addEventListener("click", (event) => {
+         event.preventDefault();
         // const categoryType = document.getElementById("location-catg").value
         // store.location.category = categoryType;
         // console.log("event", e.target.value);
         // store.location.category = e.target.value;
         console.log("store", store.location.category);
         foo()
+        router.navigate('/location');
       });
 
 
