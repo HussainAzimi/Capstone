@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import userPosts from './routers/userPosts.js';
 
 
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -99,7 +100,7 @@ app.get("/weather/:city", (request, response) => {
   });
 });
 
-app.use('/userPosts', userPosts);
+app.use('/community', userPosts);
 // Tell the Express app to start listening
 // Let the humans know I am running and listening on 4040
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));

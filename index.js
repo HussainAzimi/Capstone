@@ -14,14 +14,14 @@ function render(state = store.home) {
     `;
 }
 
-async function foo(done = () => {}) {
+async function foo(done = () => { }) {
   console.log("store is this now", store.location.category);
   console.log("sotore is this now", store.location.zipcode);
-  let zipcode = store.location.zipcode   || '63110'
+  let zipcode = store.location.zipcode || '63110'
   let category = store.location.category || 'healthcare'
   console.log("it worked", category)
   let response = await axios
-  .get(`https://api.geoapify.com/v1/geocode/search?text=${zipcode}&lang=en&limit=1&type=postcode&filter=countrycode:us&&format=json&apiKey=${process.env.GEO_API_FY_API_KEY}`)
+    .get(`https://api.geoapify.com/v1/geocode/search?text=${zipcode}&lang=en&limit=1&type=postcode&filter=countrycode:us&&format=json&apiKey=${process.env.GEO_API_FY_API_KEY}`)
   console.log(response);
   await axios
     .get(`https://api.geoapify.com/v2/places?categories=${category}&filter=place:${response.data.results[0].place_id}&apiKey=${process.env.GEO_API_FY_API_KEY}`)
@@ -61,29 +61,29 @@ async function foo(done = () => {}) {
 
 
 
-function locationEventHandler(){
+function locationEventHandler() {
   let categoryDropdown = document.getElementById("location-catg")
-      categoryDropdown.addEventListener("change", (e) => {
-        store.location.category = e.target.value;
-        console.log("state is this", store.location.category)
-      })
+  categoryDropdown.addEventListener("change", (e) => {
+    store.location.category = e.target.value;
+    console.log("state is this", store.location.category)
+  })
 
-      let location = document.getElementById("zipcode")
-      location.addEventListener("input", (e) => {
-        store.location.zipcode = e.target.value;
-        console.log("state is this", store.location.zipcode)
-      })
+  let location = document.getElementById("zipcode")
+  location.addEventListener("input", (e) => {
+    store.location.zipcode = e.target.value;
+    console.log("state is this", store.location.zipcode)
+  })
 
-      document.getElementById("btn-search-loc").addEventListener("click", async (event) => {
-         event.preventDefault();
-        // const categoryType = document.getElementById("location-catg").value
-        // store.location.category = categoryType;
-        // console.log("event", e.target.value);
-        // store.location.category = e.target.value;
-        console.log("store", store.location.category);
-        await foo()
-        router.navigate('/location');
-      });
+  document.getElementById("btn-search-loc").addEventListener("click", async (event) => {
+    event.preventDefault();
+    // const categoryType = document.getElementById("location-catg").value
+    // store.location.category = categoryType;
+    // console.log("event", e.target.value);
+    // store.location.category = e.target.value;
+    console.log("store", store.location.category);
+    await foo()
+    router.navigate('/location');
+  });
 }
 router.hooks({
   // We pass in the `done` function to the before hook handler to allow the function to tell Navigo we are finished with the before hook.
@@ -162,7 +162,7 @@ router.hooks({
   },
   already: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
-    if(view === "location"){
+    if (view === "location") {
       await foo();
     }
     render(store[view]);
@@ -188,10 +188,11 @@ router.hooks({
 
     if (view === "community") {
 
-      const userPosts = document.getElementById("user-posts");
-      const userPostsDdisplay = document.getElementById("user-posts-display");
 
-      userPosts.addEventListener("submit", event => {
+      const postForm = document.getElementById("post-form");
+      const userPostsDisplay = document.getElementById("user-posts");
+
+      postForm.addEventListener("submit", event => {
         event.preventDefault();
 
         //Get the form element
@@ -200,73 +201,57 @@ router.hooks({
 
         // Create a request body object to send to the API
         const requestData = {
-          firstName: inputList.name.value,
-          postTitle: inputList.subject.value,
-          postBody: inputList.body.value,
+          author: inputList.author.value,
+          content: inputList.content.value,
         };
 
         // Log the request body to the console
         console.log("request Body", requestData);
 
-        axios
-          // Make a POST request to the API to create a new Post
-          .post(`${process.env.USER_POSTS_API_URL}/newPost`, requestData)
+        // Make a POST request to the API to create a new Post
+        axios.post(`${process.env.USER_POSTS_API_URL}/community/posts`, requestData)
           .then(process => {
             //Then push the new post onto the post state posts attribute, so it can be displayed in the post container
             store.community.usesrPosts.push(response.data);
+            console.log("this is store ", store.community.usesrPosts);
           })
           // If there is an error log it to the console
           .catch(error => {
-            console.log("it puked", error)
+            console.log("Error in creating new post", error)
           });
-        //  const firstName = document.getElementById("first-name").value;
-        //  const subject = document.getElementById("subject").value;
-        //  const body = document.getElementById("body").value;
-
-        //  const newPost = document.createElement("div");
-        //  newPost.classList.add('new-post');
-
-        //  const authorName = document.createElement("first-name");
-        //  authorName.classList.add("author-name");
-        //  authorName.textContent= firstName;
-
-        //  const postTitle = document.createElement("h3");
-        //  postTitle.classList.add("post-title");
-        //  postTitle.textContent =subject;
-
-        //  const postBody = document.createElement("p");
-        //  postBody.classList.add("postBody");
-        //  postBody.textContent = body;
-
-        //  const buttonReplay = document.createElement("button");
-        //  buttonReplay.classList.add("button-replay");
-        //  buttonReplay.textContent = "Replay";
-
-        //  const postReply = document.createElement("div");
-        //  postReply.classList.add("post-replay");
-
-        //  buttonReplay.addEventListener("click", () => {
-        //     const replaytext = prompt("Enter you replay: ");
-
-        //     if (replaytext){
-        //       const replyContainer = document.createElement("div");
-        //       replyContainer.textContent = replaytext;
-        //       postReply.appendChild(replyContainer);
-        //     }
-        //  });
-
-        //  newPost.appendChild(authorName);
-        //  newPost.appendChild(postTitle);
-        //  newPost.appendChild(postBody);
-        //  newPost.appendChild(buttonReplay);
-        //  newPost.appendChild(postReply);
-
-        //  userPostsDdisplay.appendChild(newPost);
-
-        //  userPosts.reset();
 
 
-        // store the dorpDown user selection in location page
+
+        /// display the posts
+
+        const posts = store.community.usesrPosts.map(post => {
+
+          if (posts.length > 0) {
+            // create a div and element to show the post
+            const newPost = document.createElement("div");
+            newPost.classList.add('new-post');
+
+            const author = document.createElement("author");
+            author.classList.add("author");
+            author.textContent = post.author;
+
+            const content = document.createElement("p");
+            content.classList.add("content");
+            content.textContent = post.content;
+
+          }
+          else {
+            console.log("No Record Found");
+          }
+        });
+
+        newPost.appendChild(author);
+        newPost.appendChild(content);
+        newPost.appendChild(postBody);
+
+        userPostsDisplay.appendChild(newPost);
+
+        userPosts.reset();
 
 
       });
