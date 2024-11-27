@@ -5,8 +5,8 @@ export default (state) => html`
      <div class="forum-container">
         <div class="display-post">
           <h2>Shared posts</h2>
-           ${state.usesrPosts.map(post =>{
-             return `
+           ${state.usesrPosts.map(post => {
+  return `
 
              <p>${post.firstName}</p>
              <p>${post.postTitle}</p>
@@ -14,29 +14,20 @@ export default (state) => html`
              <p>${post.Date}</p>
 
              `
-           }).join("")}
-
-          <div id="user-posts-display"></div>
+}).join("")}
         </div>
         <div class="form-box">
               <p>Ask your question or share your success stories</p>
-                <form id="user-posts">
-                  <label for="name">First Name</label>
-                  <input type="text" id="first-name" name="name" placeholder="First Name" required>
-                  <label for="subject">Select a topic</label>
-                    <select id="subject" name="subject" required>
-                        <option value="general">General</option>
-                        <option value="language Improvment">Language Improvment</option>
-                        <option value="language">Career</option>
-                        <option value="career">Navigation</option>
-                        <option value="culture">Culture</option>
-                    </select>
-
-                    <label for="body">Type your success and helpfull story</label>
-                    <textarea id="body" name="body" required></textarea>
+                <form id="post-form">
+                   <input type="hidden" id="post-id" value ="postId">
+                   <label for="author">First Name: </label>
+                    <input type="text" id="author" name="author" placeholder="Your Name">
+                    <label for="content">Your Comment: </label>
+                    <textarea id="content" name="content" required></textarea>
                     <button type="submit">Submit</button>
                     <button type="reset">Reset</button>
                 </form>
+                <div id="user-posts"></div>
             </div>
         </div>
     </div>
