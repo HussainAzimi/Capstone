@@ -1,4 +1,3 @@
-
 import { header, main, nav, footer } from "./components";
 import * as store from "./store";
 import Navigo from "navigo";
@@ -29,7 +28,7 @@ async function foo(done = () => {}) {
     .then(response => {
       console.log("data", response.data)
       // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
-      response.data.features.map((feature) => {
+      store.location.places = response.data.features.map((feature) => {
 
         const propertyName = feature.properties.name;
         const postcode = feature.properties.postcode;
@@ -39,7 +38,7 @@ async function foo(done = () => {}) {
 
 
 
-        store.location.places.push({
+        return {
           name: propertyName,
           postcode: postcode,
           district: propertyDistrict,
@@ -47,7 +46,7 @@ async function foo(done = () => {}) {
           housenumber: propertyHouseNumber,
 
 
-        });
+        };
 
       });
       console.log(store.location.places);
@@ -60,6 +59,32 @@ async function foo(done = () => {}) {
 
 }
 
+
+
+function locationEventHandler(){
+  let categoryDropdown = document.getElementById("location-catg")
+      categoryDropdown.addEventListener("change", (e) => {
+        store.location.category = e.target.value;
+        console.log("state is this", store.location.category)
+      })
+
+      let location = document.getElementById("zipcode")
+      location.addEventListener("input", (e) => {
+        store.location.zipcode = e.target.value;
+        console.log("state is this", store.location.zipcode)
+      })
+
+      document.getElementById("btn-search-loc").addEventListener("click", async (event) => {
+         event.preventDefault();
+        // const categoryType = document.getElementById("location-catg").value
+        // store.location.category = categoryType;
+        // console.log("event", e.target.value);
+        // store.location.category = e.target.value;
+        console.log("store", store.location.category);
+        await foo()
+        router.navigate('/location');
+      });
+}
 router.hooks({
   // We pass in the `done` function to the before hook handler to allow the function to tell Navigo we are finished with the before hook.
   // The `match` parameter is the data that is passed from Navigo to the before hook handler with details about the route being accessed.
@@ -74,7 +99,7 @@ router.hooks({
 
       case "location":
         console.log("category change", store.location.category);
-        foo(done)
+        await foo(done)
         //     axios
         // .get(`https://api.geoapify.com/v2/places?categories=${store.location.category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
         // .then(response => {
@@ -135,14 +160,15 @@ router.hooks({
       // break is not needed since it is the last condition, if you move default higher in the stack then you should add the break statement.
     }
   },
-  already: (match) => {
+  already: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
     if(view === "location"){
-      foo();
+      await foo();
     }
     render(store[view]);
+    locationEventHandler();
   },
-  after: (match) => {
+  after: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
 
 
@@ -250,28 +276,7 @@ router.hooks({
 
     if (view === "location") {
 
-      let categoryDropdown = document.getElementById("location-catg")
-      categoryDropdown.addEventListener("change", (e) => {
-        store.location.category = e.target.value;
-        console.log("state is this", store.location.category)
-      })
-
-      let location = document.getElementById("zipcode")
-      location.addEventListener("input", (e) => {
-        store.location.zipcode = e.target.value;
-        console.log("state is this", store.location.zipcode)
-      })
-
-      document.getElementById("btn-search-loc").addEventListener("click", (event) => {
-         event.preventDefault();
-        // const categoryType = document.getElementById("location-catg").value
-        // store.location.category = categoryType;
-        // console.log("event", e.target.value);
-        // store.location.category = e.target.value;
-        console.log("store", store.location.category);
-        foo()
-        router.navigate('/location');
-      });
+      locationEventHandler();
 
 
     }
@@ -304,10 +309,4 @@ router
     },
   })
   .resolve();
-
-
-
-
-
-
 
