@@ -1,17 +1,16 @@
 
 import { Router } from  'express';
 import userPost from '../models/UserPost.js';
-import { v4 as  uuid4} from "uuid";
+
 
 const router = Router();
 
 // Create userPost route
-router.post("/newPost", async (request, response) => {
+router.post("/", async (request, response) => {
   console.log("request", request.body);
    const {author, content} = request.body;
     try {
       const post = new userPost({
-        postId: uuid4,
         author,
         content
       });
@@ -31,7 +30,7 @@ router.post("/newPost", async (request, response) => {
 
 
   // Get all userPost route (Read userPost)
-router.get("/posts/:postId", async (request, response) => {
+router.get("/:postId", async (request, response) => {
     try {
       // Store the query params into a JavaScript Object
       const query = request.query; // Defaults to an empty object {}
