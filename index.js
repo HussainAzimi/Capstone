@@ -186,78 +186,41 @@ router.hooks({
       });
     }
 
+
     if (view === "community") {
-
-
-      const postForm = document.getElementById("post-form");
-      const userPostsDisplay = document.getElementById("user-posts");
-
-      postForm.addEventListener("submit", event => {
+      // Add an event handler for the submit button on the form
+      document.querySelector("form").addEventListener("submit", event => {
         event.preventDefault();
 
-        //Get the form element
+        // Get the form element
         const inputList = event.target.elements;
         console.log("Input Element List", inputList);
+
 
         // Create a request body object to send to the API
         const requestData = {
           author: inputList.author.value,
           content: inputList.content.value,
         };
-
         // Log the request body to the console
         console.log("request Body", requestData);
 
-        // Make a POST request to the API to create a new Post
-        axios.post(`${process.env.USER_POSTS_API_URL}/community/posts`, requestData)
-          .then(process => {
-            //Then push the new post onto the post state posts attribute, so it can be displayed in the post container
+        axios
+          // Make a POST request to the API to create a new pizza
+          .post(`${process.env.USER_POSTS_API_URL}/posts`, requestData)
+          .then(response => {
+          //  Then push the new post onto the post state post attribute, so it can be displayed
             store.community.usesrPosts.push(response.data);
-            console.log("this is store ", store.community.usesrPosts);
+            router.navigate("/post");
           })
           // If there is an error log it to the console
           .catch(error => {
-            console.log("Error in creating new post", error)
+            console.log("Error in Creating new post", error);
           });
-
-
-
-        /// display the posts
-
-        const posts = store.community.usesrPosts.map(post => {
-
-          if (posts.length > 0) {
-            // create a div and element to show the post
-            const newPost = document.createElement("div");
-            newPost.classList.add('new-post');
-
-            const author = document.createElement("author");
-            author.classList.add("author");
-            author.textContent = post.author;
-
-            const content = document.createElement("p");
-            content.classList.add("content");
-            content.textContent = post.content;
-
-          }
-          else {
-            console.log("No Record Found");
-          }
-        });
-
-        newPost.appendChild(author);
-        newPost.appendChild(content);
-        newPost.appendChild(postBody);
-
-        userPostsDisplay.appendChild(newPost);
-
-        userPosts.reset();
-
-
       });
-
-
     }
+
+
 
     if (view === "location") {
 
