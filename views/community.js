@@ -4,12 +4,13 @@ export default (state) => html`
      <h2>Disscussion Forum</h2>
      <div class="forum-container">
         <div class="display-post">
-           ${state.usesrPosts.map(post => {
+           ${state.userPosts.map(post => {
               return `
-
-                <p>${post.author}</p>
-                <p>${post.content}</p>
-                <p>${post.create}</p>
+                <div class="post-items">
+                  <p>Date created: ${post.create}</p>
+                   <p>Author: ${post.author}</p>
+                    <p>${post.content}</p>
+                 </div>
 
              `
              }).join("")}

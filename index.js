@@ -14,7 +14,52 @@ function render(state = store.home) {
     `;
 }
 
-async function foo(done = () => { }) {
+async function communityEventHandler(){
+    // Add an event handler for the submit button on the form
+    document.querySelector("form").addEventListener("submit", event => {
+      event.preventDefault();
+
+      // Get the form element
+      const inputList = event.target.elements;
+      console.log("Input Element List", inputList);
+
+
+      // Create a request body object to send to the API
+      const requestData = {
+        author: inputList.author.value,
+        content: inputList.content.value,
+      };
+      // Log the request body to the console
+      console.log("request Body", requestData);
+
+      axios
+        // Make a POST request to the API to create a new pizza
+        .post(`${process.env.USER_POSTS_API_URL}/posts`, requestData)
+        .then(response => {
+        //  Then push the new post onto the post state post attribute, so it can be displayed
+          store.community.userPosts.push(response.data);
+          console.log(store.community.userPosts);
+          router.navigate("/community");
+        })
+        // If there is an error log it to the console
+        .catch(error => {
+          console.log("Error in Creating new post", error);
+        });
+    });
+}
+
+
+  async function getPosts(done = () =>{}) {
+    await axios.get(`${process.env.USER_POSTS_API_URL}/posts`)
+    .then(postResponse =>{
+        console.log(postResponse.data);
+        store.community.userPosts = postResponse.data;
+    });
+     done();//move this to axios then
+  }
+
+
+async function getLocations(done = () => { }) {
   console.log("store is this now", store.location.category);
   console.log("sotore is this now", store.location.zipcode);
   let zipcode = store.location.zipcode || '63110'
@@ -81,7 +126,7 @@ function locationEventHandler() {
     // console.log("event", e.target.value);
     // store.location.category = e.target.value;
     console.log("store", store.location.category);
-    await foo()
+    await getLocations()
     router.navigate('/location');
   });
 }
@@ -96,10 +141,13 @@ router.hooks({
     // Add a switch case statement to handle multiple routes
 
     switch (view) {
+      case "community":
+        getPosts(done);
+        break;
 
       case "location":
         console.log("category change", store.location.category);
-        await foo(done)
+        await getLocations(done)
         //     axios
         // .get(`https://api.geoapify.com/v2/places?categories=${store.location.category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
         // .then(response => {
@@ -163,10 +211,25 @@ router.hooks({
   already: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
     if (view === "location") {
-      await foo();
+      await getLocations();
     }
+
+    if (view === "community") {
+
+      getPosts();
+    }
+
     render(store[view]);
-    locationEventHandler();
+
+    if(view === "location"){
+      locationEventHandler();
+    }
+
+    if (view === "community") {
+
+      communityEventHandler();
+    }
+
   },
   after: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
@@ -188,36 +251,8 @@ router.hooks({
 
 
     if (view === "community") {
-      // Add an event handler for the submit button on the form
-      document.querySelector("form").addEventListener("submit", event => {
-        event.preventDefault();
 
-        // Get the form element
-        const inputList = event.target.elements;
-        console.log("Input Element List", inputList);
-
-
-        // Create a request body object to send to the API
-        const requestData = {
-          author: inputList.author.value,
-          content: inputList.content.value,
-        };
-        // Log the request body to the console
-        console.log("request Body", requestData);
-
-        axios
-          // Make a POST request to the API to create a new pizza
-          .post(`${process.env.USER_POSTS_API_URL}/posts`, requestData)
-          .then(response => {
-          //  Then push the new post onto the post state post attribute, so it can be displayed
-            store.community.usesrPosts.push(response.data);
-            router.navigate("/post");
-          })
-          // If there is an error log it to the console
-          .catch(error => {
-            console.log("Error in Creating new post", error);
-          });
-      });
+      communityEventHandler();
     }
 
 

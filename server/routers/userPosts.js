@@ -18,6 +18,7 @@ router.post("/", async (request, response) => {
       const data = await post.save();
 
       response.json(data);
+      console.log(data);
     } catch(error) {
       // Output error to the console incase it fails to send in response
       console.log(error);
@@ -30,7 +31,7 @@ router.post("/", async (request, response) => {
 
 
   // Get all userPost route (Read userPost)
-router.get("/:postId", async (request, response) => {
+router.get("/", async (request, response) => {
     try {
       // Store the query params into a JavaScript Object
       const query = request.query; // Defaults to an empty object {}

@@ -358,6 +358,20 @@ padding: 20px;
 .forum-container .form-box{
   box-shadow: none;
 }
+.forum-container .display-post{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.display-post .post-items{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  width: 100%;
+  max-width: 600px;
+}
 /* end community page style */
 
 /* start location page style */
