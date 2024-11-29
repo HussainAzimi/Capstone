@@ -1,3 +1,5 @@
+import userImage from "../assets/User-image.jpg";
+
 import html from "html-literal";
 export default (state) => html`
 <section class="community" id="community">
@@ -7,8 +9,12 @@ export default (state) => html`
            ${state.userPosts.map(post => {
               return `
                 <div class="post-items">
-                  <p>Date created: ${post.create}</p>
-                   <p>Author: ${post.author}</p>
+                    <div class="items-head">
+                    <img src="${userImage}">
+                    <p>Author: ${post.author}</p>
+                    <p>Post Date: ${post.create}</p>
+                    </div>
+
                     <p>${post.content}</p>
                  </div>
 
