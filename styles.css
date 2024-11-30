@@ -338,6 +338,9 @@ select {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.forum-container .message-info{
+  display: none;
+}
 
 .forum-container{
 display: flex;

@@ -9,6 +9,7 @@ export default (state) => html`
 <section class="community" id="community">
    <div class="forum-container">
      <h2>Disscussion Forum</h2>
+     <div class="message-info"><h2 class=".message-title"></h2></div>
      <div class="display-post">
        ${state.userPosts.map(post => {
               const formatedDate = new Date(post.create).toLocaleString("en-us");

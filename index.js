@@ -30,6 +30,8 @@ export function addDeleteButtonHandler() {
           .then(async deleteResponse => {
             if (deleteResponse.status === 200) {
               console.log(`post ${id} was successfully deleted`);
+              alert(`post ${author} was successfully deleted`);
+
             }
 
             // Update the user Posts after removing the post
