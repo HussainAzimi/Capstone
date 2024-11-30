@@ -4,6 +4,7 @@ import Navigo from "navigo";
 import { camelCase, fromPairs } from "lodash";
 import axios from "axios";
 
+
 const router = new Navigo("/");
 
 function render(state = store.home) {
@@ -13,6 +14,54 @@ function render(state = store.home) {
       ${footer()}
     `;
 }
+
+
+// add add DeleteButtonHandler user post in community page
+export function addDeleteButtonHandler() {
+  document.querySelectorAll('.delete-post')
+  .forEach(domElement => {
+    domElement.addEventListener('click', async event => {
+      const { id, author} = event.target.dataset;
+
+
+      if (confirm(`Are you sure you want to delete this post for ${author}`)) {
+        await axios
+          .delete(`${process.env.USER_POSTS_API_URL}/posts/${id}`)
+          .then(async deleteResponse => {
+            if (deleteResponse.status === 200) {
+              console.log(`post ${id} was successfully deleted`);
+            }
+
+            // Update the user Posts after removing the post
+            await axios
+              .get(`${process.env.USER_POSTS_API_URL}/posts`)
+              .then((response) => {
+                store.community.userPosts = response.data;
+                console.log("this is store after delete post: ", store.community.userPosts);
+                // Reload the existing page, thus firing the already hook
+                router.navigate("/community");
+
+              })
+              .catch((error) => {
+                console.error("Error retrieving post", error);
+
+                router.navigate("/community");
+
+              });
+          })
+          .catch(error => {
+            console.error("Error deleting post", error);
+
+            router.navigate("/community");
+
+          })
+      }
+    });
+  });
+}
+
+
+
 
 async function communityEventHandler(){
     // Add an event handler for the submit button on the form
@@ -47,8 +96,6 @@ async function communityEventHandler(){
         });
     });
 }
-
-
   async function getPosts(done = () =>{}) {
     await axios.get(`${process.env.USER_POSTS_API_URL}/posts`)
     .then(postResponse =>{
@@ -57,7 +104,6 @@ async function communityEventHandler(){
     });
      done();//move this to axios then
   }
-
 
 async function getLocations(done = () => { }) {
   console.log("store is this now", store.location.category);
@@ -121,10 +167,6 @@ function locationEventHandler() {
 
   document.getElementById("btn-search-loc").addEventListener("click", async (event) => {
     event.preventDefault();
-    // const categoryType = document.getElementById("location-catg").value
-    // store.location.category = categoryType;
-    // console.log("event", e.target.value);
-    // store.location.category = e.target.value;
     console.log("store", store.location.category);
     await getLocations()
     router.navigate('/location');
@@ -195,16 +237,22 @@ router.hooks({
     if (view === "community") {
 
       communityEventHandler();
+      addDeleteButtonHandler();
     }
 
   },
   after: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
-
+      // add menu toggle to bars icon in nav bar
+      document.querySelector(".fa-bars").addEventListener("click", () => {
+        document.querySelector("nav > ul").classList.toggle("hidden--mobile");
+      });
+      router.updatePageLinks();
 
 
     // hide and show feedback form in home page
     if (view === "home") {
+
       document.querySelector(".show-feedback").addEventListener("click", () => {
         const frmStatus = document.querySelector("#display-hide");
         if (frmStatus.style.display === "none") {
@@ -212,7 +260,6 @@ router.hooks({
         } else {
           frmStatus.style.display = "none";
         }
-
       });
     }
 
@@ -220,8 +267,8 @@ router.hooks({
     if (view === "community") {
 
       communityEventHandler();
+      addDeleteButtonHandler();
     }
-
 
 
     if (view === "location") {
@@ -230,16 +277,6 @@ router.hooks({
 
 
     }
-
-
-
-    router.updatePageLinks();
-
-    // add menu toggle to bars icon in nav bar
-    document.querySelector(".fa-bars").addEventListener("click", () => {
-      document.querySelector("nav > ul").classList.toggle("hidden--mobile");
-    });
-
 
   }
 });
