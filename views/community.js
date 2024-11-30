@@ -7,12 +7,14 @@ export default (state) => html`
      <div class="forum-container">
         <div class="display-post">
            ${state.userPosts.map(post => {
+              const formatedDate = new Date(post.create).toLocaleString();
               return `
                 <div class="post-items">
                     <div class="items-head">
                     <img src="${userImage}">
                     <p>Author: ${post.author}</p>
-                    <p>Post Date: ${post.create}</p>
+
+                    <p>Post Date: ${formatedDate}</p>
                     </div>
 
                     <p>${post.content}</p>

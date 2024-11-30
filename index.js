@@ -148,39 +148,6 @@ router.hooks({
       case "location":
         console.log("category change", store.location.category);
         await getLocations(done)
-        //     axios
-        // .get(`https://api.geoapify.com/v2/places?categories=${store.location.category}&filter=rect:-90.20,38.77,-90.30,38.58&apiKey=${process.env.GEO_API_FY_API_KEY}`)
-        // .then(response => {
-        //   // We need to store the response to the state, in the next step but in the meantime let's see what it looks like so that we know what to store from the response.
-        //         response.data.features.map((feature) => {
-
-        //         const propertyName = feature.properties.name;
-        //         const postcode = feature.properties.postcode;
-        //         const propertyDistrict = feature.properties.district;
-        //         const propertyStreet = feature.properties.street;
-        //         const propertyHouseNumber = feature.properties.housenumber;
-
-
-
-        //         store.location.places.push({
-        //           name: propertyName,
-        //           postcode: postcode,
-        //           district: propertyDistrict,
-        //           street: propertyStreet,
-        //           housenumber: propertyHouseNumber,
-
-
-        //         });
-
-        //    });
-
-        //   done();
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        //   done();
-        // });
-        //  done();
         break;
       // Add a case for each view that needs data from an API
       case "home":
