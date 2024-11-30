@@ -11,7 +11,8 @@ const postSchema = new mongoose.Schema({
 
   content: {
     type: String,
-    validate: /^[A-Za-z0-9 ]*$/
+    required: true,
+    // validate: /^[A-Za-z0-9 ]*$/
   },
   create: {
 
