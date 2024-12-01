@@ -17,7 +17,7 @@ function render(state = store.home) {
 
 
 // add add DeleteButtonHandler user post in community page
-export function addDeleteButtonHandler() {
+async function addDeleteButtonHandler() {
   document.querySelectorAll('.delete-post')
   .forEach(domElement => {
     domElement.addEventListener('click', async event => {
